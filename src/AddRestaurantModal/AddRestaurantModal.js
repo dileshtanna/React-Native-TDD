@@ -6,12 +6,20 @@ export default class AddRestaurantModal extends Component {
   state = {
     restaurantName: ""
   };
-  handleTextChange = val => {
-    this.setState({ restaurantName: val });
+  handleTextChange = restaurantName => {
+    this.setState({ restaurantName });
+  };
+  handleOnSave = () => {
+    this.props.onSaveRestaurant(this.state.restaurantName);
+    this.setState({ restaurantName: "" });
   };
   render() {
     return (
-      <Overlay fullScreen={true} isVisible={this.props.visible}>
+      <Overlay
+        animationType="slide"
+        fullScreen={true}
+        isVisible={this.props.visible}
+      >
         <View>
           <Text h3>Add Restaurant</Text>
           <View>
@@ -24,9 +32,7 @@ export default class AddRestaurantModal extends Component {
           </View>
           <View>
             <Button
-              onPress={() =>
-                this.props.onSaveRestaurant(this.state.restaurantName)
-              }
+              onPress={this.handleOnSave}
               testID="submitRestaurant"
               title="Submit"
             />
