@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Button, View } from "react-native";
+import { View } from "react-native";
 import AddRestaurantModal from "../AddRestaurantModal/AddRestaurantModal";
 import RestaurantList from "../RestaurantList/RestaurantList";
+import { Button, Text } from "react-native-elements";
 
 export default class Restaurants extends Component {
   state = {
@@ -23,6 +24,7 @@ export default class Restaurants extends Component {
   render() {
     return (
       <View>
+        <Text h2>Restaurants</Text>
         <Button
           onPress={this.toggleAddRestaurantModal}
           testID="addNewRestaurantButton"
