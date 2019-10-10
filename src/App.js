@@ -1,13 +1,11 @@
-import React, { Component } from "react";
-import { Text, View } from "react-native";
-import Restaurants from "./Restaurants/Restaurants";
+import RestaurantsScreen from "./Restaurants/Restaurants";
+import { createAppContainer } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
 
-export default class App extends Component {
-  render() {
-    return (
-      <View>
-        <Restaurants />
-      </View>
-    );
+const AppNavigator = createStackNavigator({
+  Home: {
+    screen: RestaurantsScreen
   }
-}
+});
+
+export default createAppContainer(AppNavigator);
