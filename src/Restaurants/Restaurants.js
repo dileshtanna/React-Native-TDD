@@ -10,20 +10,46 @@ export default class Restaurants extends Component {
     title: "Restaurants"
   };
   state = {
+    id: 1,
     addRestaurantModalVisible: false,
     restaurants: []
   };
   toggleAddRestaurantModal = () => {
     this.setState({
-      addRestaurantModalVisible: !this.state.addRestaurantModalVisible
+      addRestaurantModalVisible: true
     });
   };
   onSaveRestaurant = newRestaurantName => {
-    if (this.state.restaurants.includes(newRestaurantName)) return;
+    newRestaurant = {
+      id: this.state.id,
+      name: newRestaurantName,
+      dishes: []
+    };
     this.setState(prevState => ({
       ...prevState,
-      restaurants: [...prevState.restaurants, newRestaurantName],
-      addRestaurantModalVisible: false
+      restaurants: [...prevState.restaurants, newRestaurant],
+      addRestaurantModalVisible: false,
+      id: prevState.id + 1
+    }));
+  };
+  onSaveDish = (id, newDishName) => {
+    let indexOfRestaurantToUpdate = this.state.restaurants.findIndex(
+      restaurant => restaurant.id === id
+    );
+    let updatedRestaurant = {
+      ...this.state.restaurants[indexOfRestaurantToUpdate],
+      dishes: [
+        ...this.state.restaurants[indexOfRestaurantToUpdate].dishes,
+        newDishName
+      ]
+    };
+    this.setState(prevState => ({
+      ...prevState,
+      restaurants: [
+        ...prevState.restaurants.slice(0, indexOfRestaurantToUpdate),
+        updatedRestaurant,
+        ...prevState.restaurants.slice(indexOfRestaurantToUpdate + 1)
+      ]
     }));
   };
   onCancel = () => {
@@ -43,7 +69,11 @@ export default class Restaurants extends Component {
           onSaveRestaurant={this.onSaveRestaurant}
           visible={this.state.addRestaurantModalVisible}
         />
-        <RestaurantList restaurants={this.state.restaurants} />
+        <RestaurantList
+          onSaveDish={this.onSaveDish}
+          navigation={this.props.navigation}
+          restaurants={this.state.restaurants}
+        />
       </View>
     );
   }

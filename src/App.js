@@ -1,10 +1,14 @@
-import RestaurantsScreen from "./Restaurants/Restaurants";
+import Restaurants from "./Restaurants/Restaurants";
+import Dishes from "./Dishes/Dishes";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 
 const AppNavigator = createStackNavigator({
-  Home: {
-    screen: RestaurantsScreen
+  RestaurantsScreen: {
+    screen: Restaurants
+  },
+  DishesScreen: {
+    screen: Dishes
   }
 });
 

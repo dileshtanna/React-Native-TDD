@@ -62,7 +62,7 @@ describe("AddRestaurantModal", () => {
     });
   });
 
-  describe("Upon Submit empty text field", () => {
+  describe("Upon Invalid Input", () => {
     const onSaveRestaurant = jest.fn();
     const messageText = "";
     beforeAll(() => {
@@ -83,7 +83,7 @@ describe("AddRestaurantModal", () => {
       ).toEqual("Restaurant name is required.");
     });
 
-    it("calls the onSaveRestaurant handler with the entered text", () => {
+    it("should not call the onSaveRestaurant handler with the entered text", () => {
       expect(onSaveRestaurant).not.toHaveBeenCalled();
     });
   });
