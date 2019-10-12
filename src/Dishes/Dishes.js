@@ -5,9 +5,9 @@ import AddDishModal from "../AddDishModal/AddDishModal";
 import DishesList from "../DishesList/DishesList";
 
 export default class Dishes extends Component {
-  // static navigationOptions = {
-  //   title: this.props.navigation.state.params.restaurant.name
-  // };
+  static navigationOptions = ({ navigation }) => ({
+    title: navigation.state.params.restaurant.name
+  });
   state = {
     addDishModalVisibility: false,
     dishes: []
