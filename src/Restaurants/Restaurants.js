@@ -11,7 +11,7 @@ export default class Restaurants extends Component {
   };
   state = {
     addRestaurantModalVisible: false,
-    restaurantNames: []
+    restaurants: []
   };
   toggleAddRestaurantModal = () => {
     this.setState({
@@ -19,25 +19,31 @@ export default class Restaurants extends Component {
     });
   };
   onSaveRestaurant = newRestaurantName => {
+    if (this.state.restaurants.includes(newRestaurantName)) return;
     this.setState(prevState => ({
       ...prevState,
-      restaurantNames: [...prevState.restaurantNames, newRestaurantName],
+      restaurants: [...prevState.restaurants, newRestaurantName],
       addRestaurantModalVisible: false
     }));
   };
+  onCancel = () => {
+    this.setState({ addRestaurantModalVisible: false });
+  };
   render() {
     return (
-      <View>
+      <View style={{ margin: 20 }}>
         <Button
           onPress={this.toggleAddRestaurantModal}
           testID="addNewRestaurantButton"
-          title="Add New Restaurant`"
+          title="Add New Restaurant"
         />
         <AddRestaurantModal
+          restaurants={this.state.restaurants}
+          onCancel={this.onCancel}
           onSaveRestaurant={this.onSaveRestaurant}
           visible={this.state.addRestaurantModalVisible}
         />
-        <RestaurantList restaurantNames={this.state.restaurantNames} />
+        <RestaurantList restaurants={this.state.restaurants} />
       </View>
     );
   }

@@ -10,7 +10,7 @@ export default class RestaurantList extends Component {
     return (
       <FlatList
         keyExtractor={this.keyExtractor}
-        data={this.props.restaurantNames}
+        data={this.props.restaurants}
         renderItem={this.renderItem}
       />
     );
