@@ -66,6 +66,23 @@ describe("Restaurants Reducer", () => {
       };
       expect(returnedStore).toEqual(expectedStore);
     });
+
+    it("should return the initialState as it is if there is no restaurant with the given id", () => {
+      const state = {
+        lastInsertedId: 1,
+        restaurants: [{ name: "Test Restaurant", id: 1, dishes: [] }]
+      };
+      const action = {
+        type: ADD_DISH,
+        payload: {
+          name: "Test Dish",
+          id: 2
+        }
+      };
+
+      const returnedStore = restaurants(state, action);
+      expect(returnedStore).toEqual(state);
+    });
   });
 
   describe("Default case", () => {

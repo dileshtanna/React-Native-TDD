@@ -3,9 +3,15 @@ import { ADD_RESTAURANT, ADD_DISH } from "../actions/Types";
 const initialState = { lastInsertedId: 0, restaurants: [] };
 
 const addDish = (restaurants, newDishData) => {
-  const indexOfRestaurantToUpdate = restaurants.findIndex(
-    restaurant => restaurant.id === newDishData.id
-  );
+  let indexOfRestaurantToUpdate;
+  try {
+    indexOfRestaurantToUpdate = restaurants.findIndex(
+      restaurant => restaurant.id === newDishData.id
+    );
+    if (indexOfRestaurantToUpdate < 0) throw {};
+  } catch (err) {
+    return restaurants;
+  }
   const restaurant = restaurants[indexOfRestaurantToUpdate];
   const updatedRestaurant = {
     ...restaurant,
