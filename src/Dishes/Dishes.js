@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { addDish } from "../actions/restaurants";
 export class Dishes extends Component {
   static navigationOptions = ({ navigation }) => ({
-    title: navigation.state.params.restaurant.name
+    title: navigation.getParam("restaurant").name
   });
   state = {
     addDishModalVisibility: false
@@ -17,8 +17,8 @@ export class Dishes extends Component {
     this.setState({ addDishModalVisibility: true });
   };
   handleDishSave = newDishName => {
-    const { id } = this.props.navigation.state.params.restaurant;
-    const { addDish } = this.props;
+    const { addDish, navigation } = this.props;
+    const { id } = navigation.getParam("restaurant");
     addDish(id, newDishName);
     this.setState({
       addDishModalVisibility: false
@@ -28,8 +28,8 @@ export class Dishes extends Component {
     this.setState({ addDishModalVisibility: false });
   };
   render() {
-    const { id } = this.props.navigation.state.params.restaurant;
-    const { restaurants } = this.props;
+    const { restaurants, navigation } = this.props;
+    const { id } = navigation.getParam("restaurant");
     const restaurant = restaurants.find(rs => rs.id === id);
     const { dishes } = restaurant;
     const { addDishModalVisibility } = this.state;
