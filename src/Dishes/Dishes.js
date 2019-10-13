@@ -1,40 +1,38 @@
 import React, { Component } from "react";
 import { View } from "react-native";
-import { Button, Text } from "react-native-elements";
+import { Button } from "react-native-elements";
 import AddDishModal from "../AddDishModal/AddDishModal";
 import DishesList from "../DishesList/DishesList";
 
-export default class Dishes extends Component {
+import { connect } from "react-redux";
+import { addDish } from "../actions/restaurants";
+export class Dishes extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: navigation.state.params.restaurant.name
   });
   state = {
-    addDishModalVisibility: false,
-    dishes: []
+    addDishModalVisibility: false
   };
-  componentDidMount() {
-    this.setState({
-      dishes: this.props.navigation.state.params.restaurant.dishes
-    });
-  }
   toggleAddDishModal = () => {
     this.setState({ addDishModalVisibility: true });
   };
   handleDishSave = newDishName => {
-    this.props.navigation.state.params.onSaveDish(
-      this.props.navigation.state.params.restaurant.id,
-      newDishName
-    );
-    this.setState(prevState => ({
-      ...prevState,
-      dishes: [...prevState.dishes, newDishName],
+    const { id } = this.props.navigation.state.params.restaurant;
+    const { addDish } = this.props;
+    addDish(id, newDishName);
+    this.setState({
       addDishModalVisibility: false
-    }));
+    });
   };
   onCancel = () => {
     this.setState({ addDishModalVisibility: false });
   };
   render() {
+    const { id } = this.props.navigation.state.params.restaurant;
+    const { restaurants } = this.props;
+    const restaurant = restaurants.find(rs => rs.id === id);
+    const { dishes } = restaurant;
+    const { addDishModalVisibility } = this.state;
     return (
       <View style={{ margin: 20 }}>
         <Button
@@ -43,13 +41,22 @@ export default class Dishes extends Component {
           testID="addNewDishButton"
         />
         <AddDishModal
-          dishes={this.state.dishes}
+          dishes={dishes}
           onCancel={this.onCancel}
           onSaveDish={this.handleDishSave}
-          visible={this.state.addDishModalVisibility}
+          visible={addDishModalVisibility}
         />
-        <DishesList dishes={this.state.dishes} />
+        <DishesList dishes={dishes} />
       </View>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  restaurants: state.restaurantsStore.restaurants
+});
+
+export default connect(
+  mapStateToProps,
+  { addDish }
+)(Dishes);

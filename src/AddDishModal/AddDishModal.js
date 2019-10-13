@@ -22,26 +22,25 @@ export default class AddDishModal extends Component {
     this.setState({ dishName: "" });
   };
   handkeOnCancel = () => {
-    this.props.onCancel();
+    const { onCancel } = this.props;
+    onCancel();
     this.setState({ dishName: "", errorMessage: "" });
   };
   render() {
+    const { visible } = this.props;
+    const { dishName, errorMessage } = this.state;
     return (
-      <Overlay
-        animationType="slide"
-        fullScreen={true}
-        isVisible={this.props.visible}
-      >
+      <Overlay animationType="slide" fullScreen={true} isVisible={visible}>
         <View style={{ padding: 20 }}>
           <Text h3>Add Dish</Text>
           <View>
             <Input
               autoFocus={true}
               label="Dish Name"
-              value={this.state.dishName}
+              value={dishName}
               onChangeText={val => this.handleTextChange(val)}
               testID="dishNameField"
-              errorMessage={this.state.errorMessage}
+              errorMessage={errorMessage}
             />
           </View>
           <View style={{ marginTop: 20 }}>

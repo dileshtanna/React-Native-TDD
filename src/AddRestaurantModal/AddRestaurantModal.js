@@ -14,7 +14,7 @@ export default class AddRestaurantModal extends Component {
     const { restaurantName } = this.state;
     const { onSaveRestaurant, restaurants } = this.props;
 
-    if (restaurants.includes(restaurantName))
+    if (restaurants.findIndex(rs => rs.name === restaurantName) >= 0)
       return this.setState({ errorMessage: "Restaurant already exists." });
     else if (restaurantName === "")
       return this.setState({ errorMessage: "Restaurant name is required." });
@@ -24,26 +24,25 @@ export default class AddRestaurantModal extends Component {
     }
   };
   handkeOnCancel = () => {
-    this.props.onCancel();
+    const { onCancel } = this.props;
+    onCancel();
     this.setState({ restaurantName: "", errorMessage: "" });
   };
   render() {
+    const { visible } = this.props;
+    const { restaurantName, errorMessage } = this.state;
     return (
-      <Overlay
-        animationType="slide"
-        fullScreen={true}
-        isVisible={this.props.visible}
-      >
+      <Overlay animationType="slide" fullScreen={true} isVisible={visible}>
         <View style={{ padding: 20 }}>
           <Text h3>Add Restaurant</Text>
           <View>
             <Input
               autoFocus={true}
               label="Restaurant Name"
-              value={this.state.restaurantName}
+              value={restaurantName}
               onChangeText={val => this.handleTextChange(val)}
               testID="reataurantNameField"
-              errorMessage={this.state.errorMessage}
+              errorMessage={errorMessage}
             />
           </View>
           <View style={{ marginTop: 20 }}>

@@ -8,7 +8,7 @@ describe("AddRestaurantModal", () => {
 
   describe("Upon Submit", () => {
     const onSaveRestaurant = jest.fn();
-    const messageText = "Hello, World!";
+    const restaurantName = "Test Restaurant";
     beforeAll(() => {
       wrapper = shallow(
         <AddRestaurantModal
@@ -18,7 +18,7 @@ describe("AddRestaurantModal", () => {
       );
       wrapper
         .findWhere(testID("reataurantNameField"))
-        .simulate("changeText", messageText);
+        .simulate("changeText", restaurantName);
       wrapper.findWhere(testID("submitRestaurant")).simulate("press");
     });
     it("should clear the text field after saving", () => {
@@ -32,18 +32,18 @@ describe("AddRestaurantModal", () => {
       ).toEqual("");
     });
     it("calls the onSaveRestaurant handler with the entered text", () => {
-      expect(onSaveRestaurant).toHaveBeenCalledWith(messageText);
+      expect(onSaveRestaurant).toHaveBeenCalledWith(restaurantName);
     });
   });
 
   describe("Upon Cancel", () => {
     const onCancel = jest.fn();
-    const messageText = "Hello, World!";
+    const restaurantName = "Test Restaurant";
     beforeAll(() => {
       wrapper = shallow(<AddRestaurantModal onCancel={onCancel} />);
       wrapper
         .findWhere(testID("reataurantNameField"))
-        .simulate("changeText", messageText);
+        .simulate("changeText", restaurantName);
       wrapper.findWhere(testID("cancel")).simulate("press");
     });
 
@@ -64,7 +64,7 @@ describe("AddRestaurantModal", () => {
 
   describe("Upon Invalid Input", () => {
     const onSaveRestaurant = jest.fn();
-    const messageText = "";
+    const restaurantName = "";
     beforeAll(() => {
       wrapper = shallow(
         <AddRestaurantModal
@@ -74,7 +74,7 @@ describe("AddRestaurantModal", () => {
       );
       wrapper
         .findWhere(testID("reataurantNameField"))
-        .simulate("changeText", messageText);
+        .simulate("changeText", restaurantName);
       wrapper.findWhere(testID("submitRestaurant")).simulate("press");
     });
     it("should have an error message", () => {
@@ -90,17 +90,17 @@ describe("AddRestaurantModal", () => {
 
   describe("Upon Submit with already existing restaurant", () => {
     const onSaveRestaurant = jest.fn();
-    const messageText = "Hello, World!";
+    const restaurantName = "Test Restaurant";
     beforeAll(() => {
       wrapper = shallow(
         <AddRestaurantModal
-          restaurants={[messageText]}
+          restaurants={[{ name: restaurantName, id: 1, dishes: [] }]}
           onSaveRestaurant={onSaveRestaurant}
         />
       );
       wrapper
         .findWhere(testID("reataurantNameField"))
-        .simulate("changeText", messageText);
+        .simulate("changeText", restaurantName);
       wrapper.findWhere(testID("submitRestaurant")).simulate("press");
     });
     it("should have an error message", () => {

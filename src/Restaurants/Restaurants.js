@@ -2,17 +2,17 @@ import React, { Component } from "react";
 import { View } from "react-native";
 import AddRestaurantModal from "../AddRestaurantModal/AddRestaurantModal";
 import RestaurantList from "../RestaurantList/RestaurantList";
-import { Button, Text } from "react-native-elements";
+import { Button } from "react-native-elements";
+import { connect } from "react-redux";
+import { addRestaurant } from "../actions/restaurants";
 
-export default class Restaurants extends Component {
+export class Restaurants extends Component {
   static navigationOptions = {
     headerTitleStyle: { textAlign: "center" },
     title: "Restaurants"
   };
   state = {
-    id: 1,
-    addRestaurantModalVisible: false,
-    restaurants: []
+    addRestaurantModalVisible: false
   };
   toggleAddRestaurantModal = () => {
     this.setState({
@@ -20,42 +20,18 @@ export default class Restaurants extends Component {
     });
   };
   onSaveRestaurant = newRestaurantName => {
-    newRestaurant = {
-      id: this.state.id,
-      name: newRestaurantName,
-      dishes: []
-    };
-    this.setState(prevState => ({
-      ...prevState,
-      restaurants: [...prevState.restaurants, newRestaurant],
-      addRestaurantModalVisible: false,
-      id: prevState.id + 1
-    }));
-  };
-  onSaveDish = (id, newDishName) => {
-    let indexOfRestaurantToUpdate = this.state.restaurants.findIndex(
-      restaurant => restaurant.id === id
-    );
-    let updatedRestaurant = {
-      ...this.state.restaurants[indexOfRestaurantToUpdate],
-      dishes: [
-        ...this.state.restaurants[indexOfRestaurantToUpdate].dishes,
-        newDishName
-      ]
-    };
-    this.setState(prevState => ({
-      ...prevState,
-      restaurants: [
-        ...prevState.restaurants.slice(0, indexOfRestaurantToUpdate),
-        updatedRestaurant,
-        ...prevState.restaurants.slice(indexOfRestaurantToUpdate + 1)
-      ]
-    }));
+    const { addRestaurant } = this.props;
+    addRestaurant(newRestaurantName);
+    this.setState({
+      addRestaurantModalVisible: false
+    });
   };
   onCancel = () => {
     this.setState({ addRestaurantModalVisible: false });
   };
   render() {
+    const { restaurants, navigation } = this.props;
+    const { addRestaurantModalVisible } = this.state;
     return (
       <View style={{ margin: 20 }}>
         <Button
@@ -64,17 +40,26 @@ export default class Restaurants extends Component {
           title="Add New Restaurant"
         />
         <AddRestaurantModal
-          restaurants={this.state.restaurants}
+          restaurants={restaurants}
           onCancel={this.onCancel}
           onSaveRestaurant={this.onSaveRestaurant}
-          visible={this.state.addRestaurantModalVisible}
+          visible={addRestaurantModalVisible}
         />
         <RestaurantList
           onSaveDish={this.onSaveDish}
-          navigation={this.props.navigation}
-          restaurants={this.state.restaurants}
+          navigation={navigation}
+          restaurants={restaurants}
         />
       </View>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  restaurants: state.restaurantsStore.restaurants
+});
+
+export default connect(
+  mapStateToProps,
+  { addRestaurant }
+)(Restaurants);

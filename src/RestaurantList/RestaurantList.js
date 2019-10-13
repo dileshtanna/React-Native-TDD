@@ -1,30 +1,30 @@
-import React, { Component } from "react";
+import React from "react";
 import { FlatList } from "react-native";
 import { ListItem } from "react-native-elements";
 
-export default class RestaurantList extends Component {
-  keyExtractor = item => item.id.toString();
-  handleRestaurantPress = item => {
-    this.props.navigation.navigate("DishesScreen", {
+const RestaurantList = ({ restaurants, navigation, onSaveDish }) => {
+  const keyExtractor = item => item.id.toString();
+  const handleRestaurantPress = item => {
+    navigation.navigate("DishesScreen", {
       restaurant: item,
-      onSaveDish: this.props.onSaveDish
+      onSaveDish
     });
   };
   renderItem = ({ item }) => (
     <ListItem
-      onPress={() => this.handleRestaurantPress(item)}
+      onPress={() => handleRestaurantPress(item)}
       title={item.name}
       bottomDivider
       chevron
     />
   );
-  render() {
-    return (
-      <FlatList
-        keyExtractor={this.keyExtractor}
-        data={this.props.restaurants}
-        renderItem={this.renderItem}
-      />
-    );
-  }
-}
+  return (
+    <FlatList
+      keyExtractor={keyExtractor}
+      data={restaurants}
+      renderItem={renderItem}
+    />
+  );
+};
+
+export default RestaurantList;
