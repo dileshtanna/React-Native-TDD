@@ -9,7 +9,7 @@ describe("Managing Restaurants", () => {
     await createDish(restaurantName);
   });
 
-  createRestaurant = async restaurantName => {
+  const createRestaurant = async restaurantName => {
     await expect(element(by.id("addNewRestaurantButton"))).toBeVisible();
     await expect(element(by.id("reataurantNameField"))).toBeNotVisible();
     await element(by.id("addNewRestaurantButton")).tap();
@@ -24,7 +24,7 @@ describe("Managing Restaurants", () => {
     await expect(element(by.text(restaurantName))).toBeVisible();
   };
 
-  createDish = async restaurantName => {
+  const createDish = async restaurantName => {
     const dishName = "Fried Rice";
     await element(by.text(restaurantName)).tap();
     await expect(element(by.id("addNewDishButton"))).toBeVisible();
