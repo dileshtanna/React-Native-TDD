@@ -10,7 +10,7 @@ const RestaurantList = ({ restaurants, navigation, onSaveDish }) => {
       onSaveDish
     });
   };
-  renderItem = ({ item }) => (
+  const renderItem = ({ item }) => (
     <ListItem
       onPress={() => handleRestaurantPress(item)}
       title={item.name}
